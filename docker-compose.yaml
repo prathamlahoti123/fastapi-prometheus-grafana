@@ -8,9 +8,6 @@ services:
     container_name: app
     ports:
       - 8000:8000
-    networks:
-      example-network:
-        ipv4_address: 172.16.238.10
 
   prometheus:
     image: prom/prometheus:latest
@@ -20,9 +17,6 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      example-network:
-        ipv4_address: 172.16.238.11
 
   grafana:
     image: grafana/grafana
@@ -36,15 +30,3 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
     env_file:
       - ./grafana/config.monitoring
-    networks:
-      example-network:
-        ipv4_address: 172.16.238.12
-
-networks:
-  example-network:
-    name: example-network
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.238.0/24
