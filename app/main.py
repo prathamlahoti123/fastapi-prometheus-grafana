@@ -14,5 +14,5 @@ Instrumentator().instrument(app).expose(app)
 
 
 @app.get("/")
-def home():
+async def home():
   return "Hello World"
