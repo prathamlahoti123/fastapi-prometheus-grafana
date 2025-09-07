@@ -17,6 +17,7 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
 
   grafana:
     image: grafana/grafana
@@ -28,5 +29,10 @@ services:
       - 3000:3000
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
     env_file:
       - ./grafana/config.monitoring
+
+volumes:
+  grafana_data:
+  prometheus_data:
