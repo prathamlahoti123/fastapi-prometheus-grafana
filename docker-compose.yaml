@@ -16,7 +16,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
 
   grafana:
@@ -28,10 +28,10 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
       - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
     env_file:
-      - ./grafana/config.monitoring
+      - ./monitoring/grafana/config.monitoring
 
 volumes:
   grafana_data:
