@@ -34,7 +34,7 @@ On the FastAPI, you can access `/metrics` endpoint to see the data Prometheus is
 ## How it looks like
 
 <p align="center">
-  <img src="./dashboard.jpeg">
+  <img src="./assets/images/dashboard.jpeg">
 </p>
 
 ## References
