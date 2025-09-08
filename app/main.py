@@ -14,5 +14,5 @@ Instrumentator().instrument(app).expose(app)
 
 
 @app.get("/")
-async def home():
-  return "Hello World"
+async def index() -> dict[str, str]:
+  return {"message": "Hello, World!"}
