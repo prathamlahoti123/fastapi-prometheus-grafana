@@ -1,6 +1,5 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import TYPE_CHECKING, TypedDict
 
 from fastapi import FastAPI, Response, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,19 +8,12 @@ from prometheus_fastapi_instrumentator import Instrumentator
 from app.logger import configure_logging
 from app.settings import settings
 
-if TYPE_CHECKING:
-  from logging import Logger
-
-
-class AppState(TypedDict):
-  logger: "Logger"
-
 
 @asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncIterator[AppState]:
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
   """Setup and teardown of application state."""
-  logger = configure_logging()
-  yield AppState(logger=logger)
+  app.state.logger = configure_logging()
+  yield
 
 
 app = FastAPI(
