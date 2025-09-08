@@ -5,6 +5,7 @@ description = "API to manage users data"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "email-validator==2.3.0",
     "fastapi==0.116.1",
     "fastcrud>=0.16.0",
     "prometheus-fastapi-instrumentator==7.1.0",
@@ -22,3 +23,9 @@ test = [
     "pytest>=8.4.2",
     "ruff>=0.12.12",
 ]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+exclude = ["monitoring", "assets", "src/.venv"]
+files = "src/"
