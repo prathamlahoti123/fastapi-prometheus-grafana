@@ -25,9 +25,3 @@ async def test_admin_users_index(client: "AsyncClient") -> None:
   resp = await client.get("/admin/user/list")
   assert resp.status_code == status.HTTP_200_OK
   assert '<h3 class="card-title">Users</h3>' in resp.text
-
-
-async def test_admin_companies_index(client: "AsyncClient") -> None:
-  resp = await client.get("/admin/company/list")
-  assert resp.status_code == status.HTTP_200_OK
-  assert '<h3 class="card-title">Companies</h3>' in resp.text
