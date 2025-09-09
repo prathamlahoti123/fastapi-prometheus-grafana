@@ -1,52 +1,43 @@
-from typing import Annotated, TypeAlias
+from typing import Annotated
 
-from pydantic import AnyHttpUrl, BaseModel, ConfigDict, EmailStr, Field
-from pydantic.alias_generators import to_camel
-from pydantic.types import StringConstraints
-
-# type alias to specify a string with constraints
-ConstrainedStr: TypeAlias = Annotated[
-  str,
-  StringConstraints(
-    min_length=1,
-    max_length=255,
-    strip_whitespace=True,
-  ),
-]
+from pydantic import EmailStr
+from sqlmodel import Field, SQLModel
 
 
-class BaseCustomModel(BaseModel):
-  """Base custom pydantic model."""
-
-  model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
-
-
-class Company(BaseCustomModel):
+class CreateCompany(SQLModel):
   """Schema representing a company."""
 
-  name: ConstrainedStr
-  link: AnyHttpUrl | None = None
+  name: str = Field(index=True, unique=True)
+  link: str | None = None
 
 
-class CreateUser(BaseCustomModel):
+class UpdateCompany(SQLModel):
+  """Schema to update a company."""
+
+  name: str | None = None
+  link: str | None = None
+
+
+class CreateUser(SQLModel):
   """Schema to create a user."""
 
-  first_name: ConstrainedStr
-  second_name: ConstrainedStr
+  first_name: str
+  second_name: str
   age: Annotated[int, Field(gt=0)]
-  email: EmailStr
-  country: ConstrainedStr
-  job_title: ConstrainedStr
-  company: ConstrainedStr
+  email: EmailStr = Field(unique=True, index=True)
+  country: str
+  job_title: str
+  company_id: str | None = Field(default=None, foreign_key="company.id")
 
 
-class UpdateUser(BaseCustomModel):
+class UpdateUser(SQLModel):
   """Schema to update a user."""
 
-  first_name: ConstrainedStr | None = None
-  second_name: ConstrainedStr | None = None
+  first_name: str | None = None
+  second_name: str | None = None
   age: Annotated[int | None, Field(gt=0)] = None
   email: EmailStr | None = None
-  country: ConstrainedStr | None = None
-  job_title: ConstrainedStr | None = None
-  company: ConstrainedStr | None = None
+  country: str | None = None
+  job_title: str | None = None
+  company: CreateCompany | None = None
+  company_id: str | None = None
