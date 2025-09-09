@@ -1,6 +1,8 @@
+import logging
 from collections.abc import AsyncIterator
 
 import pytest
+from asgi_lifespan import LifespanManager
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import (
   AsyncSession,
@@ -46,7 +48,10 @@ async def override_get_db_session() -> AsyncIterator[AsyncSession]:
 @pytest.fixture(scope="session")
 async def client() -> AsyncIterator[AsyncClient]:
   """Async HTTP client to test FastAPI endpoints."""
+  app.state.logger = logging.getLogger("test")
+  app.state.engine = engine
   app.dependency_overrides[get_db_session] = override_get_db_session
-  transport = ASGITransport(app)
-  async with AsyncClient(base_url="http://test", transport=transport) as ac:
-    yield ac
+  async with LifespanManager(app) as manager:
+    transport = ASGITransport(manager.app)
+    async with AsyncClient(base_url="http://test", transport=transport) as ac:
+      yield ac
