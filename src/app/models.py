@@ -2,9 +2,9 @@ from datetime import datetime
 from uuid import uuid4
 
 from sqlalchemy import func
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
-from app.schemas import CreateCompany, CreateUser
+from app.schemas import CreateUser
 
 
 class Base(SQLModel):
@@ -23,19 +23,8 @@ class Base(SQLModel):
   )
 
 
-class Company(Base, CreateCompany, table=True):
-  """Database model to represent a company."""
-
-  users: list["User"] = Relationship(back_populates="company")
-
-  def __str__(self) -> str:
-    return self.name
-
-
 class User(Base, CreateUser, table=True):
   """Database model to represent a user."""
-
-  company: Company | None = Relationship(back_populates="users")
 
   def __str__(self) -> str:
     return f"{self.first_name} {self.second_name} ({self.email})"
