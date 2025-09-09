@@ -1,12 +1,17 @@
-FROM python:3.13.2-alpine3.21
+FROM ghcr.io/astral-sh/uv:python3.12-alpine
 
-WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=utf-8 \
+    PATH="/src/.venv/bin:$PATH"
 
-COPY ./src/requirements.txt ./
+WORKDIR /src
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+COPY ./pyproject.toml ./uv.lock ./
 
-COPY ./src ./
+RUN apk add --no-cache curl && \
+    uv sync --locked
+
+COPY ./ ./
 
 CMD ["uvicorn", "app.main:app",  "--host", "0.0.0.0"]
