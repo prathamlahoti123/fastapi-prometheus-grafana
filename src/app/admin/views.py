@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 class CompanyAdminView(ModelView, model=Company):
   """Admin view for the Company model."""
 
+  name_plural = "Companies"
   form_columns: ClassVar[Sequence["MODEL_ATTR"]] = [
     "name",
     "link",
