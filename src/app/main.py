@@ -24,13 +24,17 @@ from app.settings import settings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-  """Run database migrations and init application state."""
+  """Run database migrations, init admin app and set app state."""
+  # Add logger to the application state
   app.state.logger = configure_logging()
+  db_engine = getattr(app.state, "engine", engine)
   # Create database tables
-  async with engine.begin() as conn:
+  async with db_engine.begin() as conn:
     await conn.run_sync(Base.metadata.create_all)
+  # Initialize admin app
+  init_admin_app(app, db_engine)
   yield
-  await engine.dispose()
+  await db_engine.dispose()
 
 
 app = FastAPI(
@@ -44,20 +48,11 @@ app = FastAPI(
     Exception: unexpected_error_handler,
   },
 )
-app.add_middleware(
-  CORSMiddleware,
-  allow_origins=["*"],
-  allow_credentials=True,
-  allow_methods=["*"],
-  allow_headers=["*"],
-)
+app.add_middleware(CORSMiddleware, **settings.cors_kwargs)
 app.include_router(user_router)
 
 # Prometheus monitoring stuff
 Instrumentator().instrument(app).expose(app)
-
-# Admin stuff
-init_admin_app(app, engine)
 
 
 @app.get("/health", status_code=status.HTTP_204_NO_CONTENT)
