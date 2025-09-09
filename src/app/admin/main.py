@@ -4,7 +4,7 @@ from sqladmin import Admin
 
 from app.settings import settings
 
-from .views import CompanyAdminView, UserAdminView
+from .views import UserAdminView
 
 if TYPE_CHECKING:
   from fastapi import FastAPI
@@ -19,6 +19,5 @@ def init_admin_app(app: "FastAPI", db: "AsyncEngine") -> Admin:
   :return: admin app
   """
   admin = Admin(app, db, debug=settings.debug)
-  admin.add_view(CompanyAdminView)
   admin.add_view(UserAdminView)
   return admin
