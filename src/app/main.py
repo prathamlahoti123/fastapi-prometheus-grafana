@@ -18,7 +18,7 @@ from app.errors import (
 )
 from app.logger import configure_logging
 from app.models import Base
-from app.routes import company_router, user_router
+from app.routes import user_router
 from app.settings import settings
 
 
@@ -51,7 +51,6 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
-app.include_router(company_router)
 app.include_router(user_router)
 
 # Prometheus monitoring stuff
