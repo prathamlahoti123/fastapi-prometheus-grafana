@@ -27,4 +27,5 @@ class User(Base, CreateUser, table=True):
   """Database model to represent a user."""
 
   def __str__(self) -> str:
+    """Display info about object in the admin interface."""
     return f"{self.first_name} {self.second_name} ({self.email})"
