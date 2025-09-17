@@ -12,6 +12,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://app:8000/health || exit 1"]
       interval: 5s
