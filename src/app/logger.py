@@ -10,4 +10,4 @@ if TYPE_CHECKING:
 def configure_logging() -> "Logger":
   """Configure logging of the application."""
   logging.basicConfig(**settings.logging_kwargs)
-  return logging.getLogger(__name__)
+  return logging.getLogger(settings.log_name)
