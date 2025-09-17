@@ -34,6 +34,14 @@ services:
       timeout: 10s
       retries: 5
 
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - 3100:3100
+    volumes:
+      - ./monitoring/loki/local-config.yaml:/etc/loki/local-config.yaml
+
   prometheus:
     image: prom/prometheus:latest
     restart: unless-stopped
