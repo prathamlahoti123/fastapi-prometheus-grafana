@@ -37,7 +37,7 @@ class Settings(BaseSettings):
   title: str = "Users Management App"
   description: str = "CRUD Application to Manage Users"
   version: str = "0.0.1"
-  debug: bool = True
+  debug: bool = False
 
   # CORS settings
   cors_allow_credentials: bool = True
@@ -46,9 +46,9 @@ class Settings(BaseSettings):
   cors_allow_methods: list[str] = ["*"]
 
   # Logging settings
-  log_name: str = "app"
-  log_level: int = logging.INFO
-  log_format: str = "%(levelname)s - %(name)s - %(asctime)s - %(message)s"
+  log_name: str = "uvicorn.error"
+  log_level: int = logging.DEBUG if debug else logging.WARNING
+  log_format: str = "%(levelname)s - %(name)s - %(message)s"
 
   # Database settings
   database_url: str = "sqlite+aiosqlite:///./test.db"
