@@ -46,7 +46,7 @@ class Settings(BaseSettings):
   cors_allow_methods: list[str] = ["*"]
 
   # Logging settings
-  log_name: str = "app"
+  log_name: str = "uvicorn.error"
   log_level: int = logging.DEBUG if debug else logging.WARNING
   log_format: str = "%(levelname)s - %(name)s - %(message)s"
 
